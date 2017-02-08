@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">Calculator</string>
+
+    <string name="tab_main_name">Main</string>
+    <string name="tab_main_second_name">Second</string>
+
+    <string name="button_upper_main_tab">No action</string>
+    <string name="button_lower_main_tab">Go to category</string>
+    <string name="button_new_main_tab">Test new features</string>
+    <string name="image_view_cnt_descr_main_tab">Description</string>
+
+    <string name="menu_search_settings">Go to Main</string>
+
+    <string name="search_hint">Search products…</string>
+
+    <string name="textView_secondary_list_product">calories</string>
+
+    <string name="navigation_title_primary">Category</string>
+    <string name="navigation_title_secondary">Settings for searching</string>
+
+    <string name="navigation_menu_switch_title">Calorific value</string>
+    <string name="navigation_menu_switch_high">Above 400</string>
+    <string name="navigation_menu_switch_medium">Between</string>
+    <string name="navigation_menu_switch_low">Below 100</string>
+
+    <string name="snackbar_text">Settings applied</string>
+
+    <string-array name="calorific_values_high">
+        <item>-1</item>
+        <item>400</item>
+        <item>100</item>
+    </string-array>
+
+    <string-array name="calorific_values_low">
+        <item>400</item>
+        <item>100</item>
+        <item>-1</item>
+    </string-array>
+</resources>

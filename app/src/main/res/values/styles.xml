@@ -1,0 +1,64 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+    </style>
+
+    <style name="ListViewStyle" parent="Widget.AppCompat.ListView">
+        <item name="divider">@color/colorDivider</item>
+    </style>
+
+    <style name="GridViewStyle">
+        <item name="android:horizontalSpacing">@dimen/gridView_horizontal_spacing</item>
+        <item name="android:verticalSpacing">@dimen/gridView_vertical_spacing</item>
+        <item name="android:paddingRight">@dimen/gridView_padding_right</item>
+        <item name="android:paddingLeft">@dimen/gridView_padding_left</item>
+        <item name="android:paddingBottom">@dimen/gridView_padding_bottom</item>
+    </style>
+
+    <style name="EllipsizedTextView">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+    </style>
+
+    <style name="GridTextViewStyle" parent="EllipsizedTextView">
+        <item name="android:textColor">@color/gridViewTextPrimary</item>
+        <item name="android:background">@color/textViewBackground</item>
+        <item name="android:layout_height">@dimen/gridView_textView_height</item>
+        <item name="android:paddingTop">@dimen/textView_padding_top</item>
+        <item name="android:paddingLeft">@dimen/textView_padding_left</item>
+        <item name="android:paddingRight">@dimen/textView_padding_right</item>
+        <item name="android:textSize">@dimen/textView_text_size</item>
+    </style>
+
+    <style name="ListViewTextStyle">
+        <item name="android:layout_marginLeft">@dimen/listView_text_margin_left</item>
+        <item name="android:layout_marginRight">@dimen/listView_text_margin_right</item>
+    </style>
+
+    <style name="ListViewTextStyle.Primary" parent="ListViewTextStyle">
+        <item name="android:ellipsize">end</item>
+        <item name="android:lines">1</item>
+        <item name="android:scrollHorizontally">true</item>
+        <item name="android:textSize">@dimen/textView_text_size</item>
+        <item name="android:layout_marginTop">@dimen/listView_text_margin_top</item>
+        <item name="android:textColor">@color/colorPrimaryText</item>
+    </style>
+
+    <style name="ListViewTextStyle.Secondary" parent="ListViewTextStyle">
+        <item name="android:layout_marginBottom">@dimen/listView_text_margin_bottom</item>
+        <item name="android:textColor">@color/colorSecondaryText</item>
+        <item name="android:textSize">@dimen/text_view_secondary_text_size</item>
+    </style>
+
+    <style name="ListViewButtonStyle">
+        <item name="android:layout_marginLeft">@dimen/listView_button_margin_left</item>
+        <item name="android:layout_marginTop">@dimen/listView_button_margin_top</item>
+    </style>
+</resources>

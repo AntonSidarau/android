@@ -1,0 +1,16 @@
+INSERT INTO category (_id,name) VALUES (1,'Meat');
+INSERT INTO category (_id,name) VALUES (2,'Milk');
+INSERT INTO category (_id,name) VALUES (3,'Breakfast');
+INSERT INTO category (_id,name) VALUES (4,'Supper');
+INSERT INTO category (_id,name) VALUES (5,'Fruit');
+INSERT INTO category (_id,name) VALUES (6,'Vegetables');
+INSERT INTO category (_id,name) VALUES (7,'Beverages');
+INSERT INTO category (_id,name) VALUES (8,'Baking Mix/Ingredients');
+INSERT INTO category (_id,name) VALUES (9,'Baked Goods');
+INSERT INTO category (_id,name) VALUES (10,'Baby Food');
+INSERT INTO category (_id,name) VALUES (11,'Condiments');
+INSERT INTO category (_id,name) VALUES (12,'Confectionery');
+INSERT INTO category (_id,name) VALUES (13,'Dairy and Eggs');
+INSERT INTO category (_id,name) VALUES (14,'Food Gifts');
+INSERT INTO category (_id,name) VALUES (15,'Frozen Foods');
+INSERT INTO category (_id,name) VALUES (16,'Grains/Cereal/Pasta');

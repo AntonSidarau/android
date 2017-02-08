@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/fragment_main_second"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <Button
+        android:text="Load Categories"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_load_categories"
+        android:layout_below="@+id/button_load_products"
+        android:layout_alignRight="@+id/button_load_products"
+        android:layout_alignEnd="@+id/button_load_products"/>
+
+    <Button
+        android:text="Show dish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_show_dish"
+        android:layout_below="@+id/button_load_categories"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
+
+    <TextView
+        android:text="TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_demonstrate_dish"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"/>
+
+    <Button
+        android:text="Load Products"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/button_load_products"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="48dp"/>
+</RelativeLayout>

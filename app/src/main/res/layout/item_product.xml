@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_product_name"
+        style="@style/ListViewTextStyle.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/colorPrimaryText"
+        tools:text="Sample primary text"/>
+
+    <CheckBox
+        android:id="@+id/cb_product_odd"
+        style="@style/ListViewButtonStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:button="@drawable/checkbox_success"
+        android:scaleX="1.5"
+        android:scaleY="1.5"/>
+
+    <TextView
+        android:id="@+id/tv_calorie"
+        style="@style/ListViewTextStyle.Secondary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tv_product_name"
+        tools:text="Sample secondary text"/>
+</RelativeLayout>

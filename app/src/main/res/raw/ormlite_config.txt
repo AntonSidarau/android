@@ -1,0 +1,127 @@
+#
+# generated on 2016/10/27 06:20:45
+#
+# --table-start--
+dataClass=com.example.asus.calculator.model.persistent.Category
+tableName=category
+# --table-fields-start--
+# --field-start--
+fieldName=name
+columnName=name
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.example.asus.calculator.model.persistent.Dish
+tableName=dish
+# --table-fields-start--
+# --field-start--
+fieldName=name
+columnName=name
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=category
+columnName=category_id
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=parts
+foreignCollection=true
+foreignCollectionForeignFieldName=dish
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.example.asus.calculator.model.persistent.Entity
+tableName=entity
+# --table-fields-start--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.example.asus.calculator.model.persistent.Part
+tableName=part
+# --table-fields-start--
+# --field-start--
+fieldName=product
+columnName=product_id
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=dish
+columnName=dish_id
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=mass
+columnName=mass
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################
+# --table-start--
+dataClass=com.example.asus.calculator.model.persistent.Product
+tableName=product
+# --table-fields-start--
+# --field-start--
+fieldName=name
+columnName=name
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=calories
+columnName=calories
+canBeNull=false
+# --field-end--
+# --field-start--
+fieldName=category
+columnName=category_id
+canBeNull=false
+foreign=true
+# --field-end--
+# --field-start--
+fieldName=parts
+foreignCollection=true
+foreignCollectionForeignFieldName=product
+# --field-end--
+# --field-start--
+fieldName=id
+columnName=_id
+dataPersister=LONG
+generatedId=true
+# --field-end--
+# --table-fields-end--
+# --table-end--
+#################################

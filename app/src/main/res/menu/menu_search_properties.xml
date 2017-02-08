@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:title="@string/navigation_menu_switch_title">
+        <menu>
+            <item
+                android:id="@+id/switch_high"
+                android:title="@string/navigation_menu_switch_high"
+                app:actionLayout="@layout/menu_switch"
+                app:showAsAction="always"
+                android:icon="@drawable/ic_arrow_right_black"/>
+
+            <item
+                android:id="@+id/switch_medium"
+                android:title="@string/navigation_menu_switch_medium"
+                app:actionLayout="@layout/menu_switch"
+                app:showAsAction="always"
+                android:icon="@drawable/ic_arrow_right_black"/>
+
+            <item
+                android:id="@+id/switch_low"
+                android:title="@string/navigation_menu_switch_low"
+                app:actionLayout="@layout/menu_switch"
+                app:showAsAction="always"
+                android:icon="@drawable/ic_arrow_right_black"/>
+        </menu>
+    </item>
+</menu>

@@ -20,6 +20,9 @@ import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> implements View.OnLongClickListener {
     private static final String TAG = ProductAdapterDelegate.class.getSimpleName();
 
@@ -73,16 +76,17 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         return true;
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+        @BindView(R.id.tv_product_name)
         TextView tvName;
+        @BindView(R.id.tv_calorie)
         TextView tvCalorie;
+        @BindView(R.id.cb_product_odd)
         CheckBox checkBox;
 
         ViewHolder(View view) {
             super(view);
-            tvName = (TextView) view.findViewById(R.id.tv_product_name);
-            tvCalorie = (TextView) view.findViewById(R.id.tv_calorie);
-            checkBox = (CheckBox) view.findViewById(R.id.cb_product_odd);
+            ButterKnife.bind(this, view);
             checkBox.setOnCheckedChangeListener(this);
         }
 

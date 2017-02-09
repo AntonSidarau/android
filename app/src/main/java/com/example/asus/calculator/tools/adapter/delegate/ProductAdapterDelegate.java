@@ -2,7 +2,6 @@ package com.example.asus.calculator.tools.adapter.delegate;
 
 import android.app.Activity;
 import android.content.Context;
-import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -15,7 +14,6 @@ import android.widget.TextView;
 
 import com.example.asus.calculator.R;
 import com.example.asus.calculator.model.ProductModel;
-import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import java.util.List;
@@ -28,12 +26,21 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
 
     private LayoutInflater inflater;
     private Context context;
-    private ProductModelRecycleAdapter adapter;
+    private OnLongClickCheckBoxListener callback;
 
-    public ProductAdapterDelegate(Activity activity, ProductModelRecycleAdapter adapter) {
+    public interface OnLongClickCheckBoxListener {
+        void update(View view);
+    }
+
+    public ProductAdapterDelegate(Activity activity) {
         inflater = activity.getLayoutInflater();
         context = activity.getApplicationContext();
-        this.adapter = adapter;
+
+        try {
+            callback = (OnLongClickCheckBoxListener) activity;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(activity.toString() + " must impl OnLongClickCheckBoxListener");
+        }
     }
 
     @Override
@@ -70,9 +77,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
 
     @Override
     public boolean onLongClick(View v) {
-        Log.d(TAG, "onLongClick: executed");
-        boolean newState = !((CheckBox) v).isChecked();
-        new AsyncSelector().execute(newState);
+        callback.update(v);
         return true;
     }
 
@@ -95,21 +100,6 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
             ProductModel model = (ProductModel) buttonView.getTag();
             model.setChecked(isChecked);
             Log.d(TAG, model.getName() + " : " + isChecked);
-        }
-    }
-
-    private class AsyncSelector extends AsyncTask<Boolean, Void, Void> {
-        @Override
-        protected Void doInBackground(Boolean... params) {
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                adapter.getList().get(i).setChecked(params[0]);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter.notifyDataSetChanged();
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.example.asus.calculator.ui.activity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,10 +8,13 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.widget.CheckBox;
 
 import com.example.asus.calculator.R;
 import com.example.asus.calculator.model.ProductModel;
 import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
+import com.example.asus.calculator.tools.adapter.delegate.ProductAdapterDelegate;
 import com.example.asus.calculator.tools.loader.LazyLoaderRecycle;
 import com.example.asus.calculator.tools.loader.ProductFullLoadTask;
 import com.example.asus.calculator.tools.loader.ResponseListener;
@@ -19,7 +23,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class RecycleActivity extends AppCompatActivity {
+public class RecycleActivity extends AppCompatActivity implements ProductAdapterDelegate.OnLongClickCheckBoxListener {
     private static final String LOG_TAG = RecycleActivity.class.getSimpleName();
 
     private ProductModelRecycleAdapter adapter;
@@ -63,5 +67,26 @@ public class RecycleActivity extends AppCompatActivity {
         });
 
 
+    }
+
+    @Override
+    public void update(View v) {
+        boolean newState = !((CheckBox) v).isChecked();
+        new AsyncSelector().execute(newState);
+    }
+
+    private class AsyncSelector extends AsyncTask<Boolean, Void, Void> {
+        @Override
+        protected Void doInBackground(Boolean... params) {
+            for (int i = 0; i < adapter.getItemCount(); i++) {
+                adapter.getList().get(i).setChecked(params[0]);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            adapter.notifyDataSetChanged();
+        }
     }
 }

@@ -10,7 +10,7 @@ import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager;
 
 import java.util.List;
 
-public class ProductModelRecycleAdapter extends RecyclerView.Adapter/* implements View.OnLongClickListener*/ {
+public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
     private static final String TAG = ProductModelRecycleAdapter.class.getSimpleName();
 
     private AdapterDelegatesManager<List<ProductModel>> manager;
@@ -19,7 +19,7 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter/* implement
     public ProductModelRecycleAdapter(Activity activity, List<ProductModel> list) {
         this.list = list;
         manager = new AdapterDelegatesManager<>();
-        manager.addDelegate(new ProductAdapterDelegate(activity, this));
+        manager.addDelegate(new ProductAdapterDelegate(activity));
     }
 
     @Override

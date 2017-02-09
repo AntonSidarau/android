@@ -1,6 +1,7 @@
 package com.example.asus.calculator.tools.adapter;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -55,10 +56,11 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
     public boolean onLongClick(View v) {
         Log.d(TAG, "onLongClick: executed");
         boolean newState = !((CheckBox) v).isChecked();
-        for (int i = 0; i < list.size(); i++) {
+        /*for (int i = 0; i < list.size(); i++) {
             list.get(i).setChecked(newState);
         }
-        notifyDataSetChanged();
+        notifyDataSetChanged();*/
+        new AsyncSelector(this).execute(newState);
         return true;
     }
 
@@ -91,6 +93,27 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
             ProductModel model = (ProductModel) buttonView.getTag();
             model.setChecked(isChecked);
             Log.d(TAG, model.getName() + " : " + isChecked);
+        }
+    }
+
+    private static class AsyncSelector extends AsyncTask<Boolean, Void, Void> {
+        private ProductRecycleAdapter adapter;
+
+        AsyncSelector(ProductRecycleAdapter adapter) {
+            this.adapter = adapter;
+        }
+
+        @Override
+        protected Void doInBackground(Boolean... params) {
+            for (int i = 0; i < adapter.list.size(); i++) {
+                adapter.list.get(i).setChecked(params[0]);
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            adapter.notifyDataSetChanged();
         }
     }
 }

@@ -16,6 +16,7 @@ import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
 import java.util.List;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -70,7 +71,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         return true;
     }
 
-    private class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
         @BindView(R.id.tv_product_name)
         TextView tvName;
         @BindView(R.id.tv_calorie)
@@ -78,12 +79,12 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         @BindView(R.id.cb_product_odd)
         CheckBox checkBox;
 
-        private String calorieText;
+        @BindString(R.string.textView_secondary_list_product)
+        String calorieText;
 
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
-            calorieText = view.getContext().getResources().getString(R.string.textView_secondary_list_product);
             checkBox.setOnCheckedChangeListener(this);
         }
 

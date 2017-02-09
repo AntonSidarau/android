@@ -37,8 +37,8 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         List<ProductModel> list = new ArrayList<>();
-        //adapter = new ProductRecycleAdapter(list, this);
         adapter = new ProductModelRecycleAdapter(this, list);
+        adapter.addDelegates(new ProductAdapterDelegate(this));
 
         lazyListener = new ResponseListener<ProductModel>() {
             @Override
@@ -65,8 +65,6 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
                 task.execute();
             }
         });
-
-
     }
 
     @Override

@@ -1,7 +1,5 @@
 package com.example.asus.calculator.tools.adapter.delegate;
 
-import android.app.Activity;
-import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -24,23 +22,14 @@ import butterknife.ButterKnife;
 public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> implements View.OnLongClickListener {
     private static final String TAG = ProductAdapterDelegate.class.getSimpleName();
 
-    private LayoutInflater inflater;
-    private Context context;
-    private OnLongClickCheckBoxListener callback;
+    private OnLongClickCheckBoxListener listener;
 
     public interface OnLongClickCheckBoxListener {
         void update(View view);
     }
 
-    public ProductAdapterDelegate(Activity activity) {
-        inflater = activity.getLayoutInflater();
-        context = activity.getApplicationContext();
-
-        try {
-            callback = (OnLongClickCheckBoxListener) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + " must impl OnLongClickCheckBoxListener");
-        }
+    public ProductAdapterDelegate(OnLongClickCheckBoxListener listener) {
+        this.listener = listener;
     }
 
     @Override
@@ -51,7 +40,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     @NonNull
     @Override
     protected RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent) {
-        View itemView = inflater.inflate(R.layout.item_product, null, false);
+        View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, null, false);
         itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
         return new ViewHolder(itemView);
@@ -63,8 +52,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         ViewHolder vh = (ViewHolder) holder;
         ProductModel model = list.get(position);
         vh.tvName.setText(model.getName());
-        String text = String.format("%s %s", model.getCalories(),
-                context.getResources().getString(R.string.textView_secondary_list_product));
+        String text = String.format("%s %s", model.getCalories(), vh.getCalorieText());
         vh.tvCalorie.setText(text);
         vh.checkBox.setTag(model);
         vh.checkBox.setOnCheckedChangeListener(null);
@@ -77,11 +65,11 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
 
     @Override
     public boolean onLongClick(View v) {
-        callback.update(v);
+        listener.update(v);
         return true;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    private class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
         @BindView(R.id.tv_product_name)
         TextView tvName;
         @BindView(R.id.tv_calorie)
@@ -89,9 +77,12 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         @BindView(R.id.cb_product_odd)
         CheckBox checkBox;
 
+        private String calorieText;
+
         ViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
+            calorieText = view.getContext().getResources().getString(R.string.textView_secondary_list_product);
             checkBox.setOnCheckedChangeListener(this);
         }
 
@@ -100,6 +91,10 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
             ProductModel model = (ProductModel) buttonView.getTag();
             model.setChecked(isChecked);
             Log.d(TAG, model.getName() + " : " + isChecked);
+        }
+
+        String getCalorieText() {
+            return calorieText;
         }
     }
 }

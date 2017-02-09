@@ -5,7 +5,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
 import com.example.asus.calculator.model.ProductModel;
-import com.example.asus.calculator.tools.adapter.delegate.ProductAdapterDelegate;
+import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager;
 
 import java.util.List;
@@ -19,7 +19,10 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
     public ProductModelRecycleAdapter(Activity activity, List<ProductModel> list) {
         this.list = list;
         manager = new AdapterDelegatesManager<>();
-        manager.addDelegate(new ProductAdapterDelegate(activity));
+    }
+
+    public void addDelegates(AdapterDelegate<List<ProductModel>> delegate) {
+        manager.addDelegate(delegate);
     }
 
     @Override

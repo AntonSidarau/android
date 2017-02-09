@@ -47,6 +47,7 @@ public class RecycleActivity extends AppCompatActivity {
                 lazyListener);
         task.execute();
 
+        
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(manager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

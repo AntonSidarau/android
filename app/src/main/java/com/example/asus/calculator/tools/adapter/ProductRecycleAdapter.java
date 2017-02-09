@@ -15,8 +15,9 @@ import com.example.asus.calculator.model.ProductModel;
 
 import java.util.List;
 
-public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAdapter.ViewHolder> {
-    private static final String LOG_TAG = ProductRecycleAdapter.class.getSimpleName();
+public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAdapter.ViewHolder>
+        implements View.OnLongClickListener {
+    private static final String TAG = ProductRecycleAdapter.class.getSimpleName();
 
     private List<ProductModel> list;
     private Context context;
@@ -37,7 +38,6 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         ProductModel model = list.get(position);
-        Log.d(LOG_TAG, "before:: " + model.getName() + " : " + model.isChecked());
         holder.tvName.setText(model.getName());
         String text = String.format("%s %s", model.getCalories(),
                 context.getResources().getString(R.string.textView_secondary_list_product));
@@ -45,9 +45,21 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
         holder.checkBox.setTag(model);
         holder.checkBox.setOnCheckedChangeListener(null);
         holder.checkBox.setChecked(model.isChecked());
-        Log.d(LOG_TAG, "after:: " + model.getName() + " : " + model.isChecked());
-        holder.checkBox.setOnCheckedChangeListener(null);
+
+        Log.d(TAG, "onBindViewHolder:: " + model.getName() + " : " + model.isChecked());
         holder.checkBox.setOnCheckedChangeListener(holder);
+        holder.checkBox.setOnLongClickListener(this);
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
+        Log.d(TAG, "onLongClick: executed");
+        boolean newState = !((CheckBox) v).isChecked();
+        for (int i = 0; i < list.size(); i++) {
+            list.get(i).setChecked(newState);
+        }
+        notifyDataSetChanged();
+        return true;
     }
 
     @Override
@@ -60,7 +72,7 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
-        private static final String LOG_TAG = ViewHolder.class.getSimpleName();
+        private static final String TAG = ViewHolder.class.getSimpleName();
 
         TextView tvName;
         TextView tvCalorie;
@@ -78,7 +90,7 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             ProductModel model = (ProductModel) buttonView.getTag();
             model.setChecked(isChecked);
-            Log.d(LOG_TAG, model.getName() + " : " + isChecked);
+            Log.d(TAG, model.getName() + " : " + isChecked);
         }
     }
 }

@@ -10,14 +10,16 @@ import com.hannesdorfmann.adapterdelegates3.AdapterDelegatesManager;
 
 import java.util.List;
 
-public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
+public class ProductModelRecycleAdapter extends RecyclerView.Adapter/* implements View.OnLongClickListener*/ {
+    private static final String TAG = ProductModelRecycleAdapter.class.getSimpleName();
+
     private AdapterDelegatesManager<List<ProductModel>> manager;
     private List<ProductModel> list;
 
     public ProductModelRecycleAdapter(Activity activity, List<ProductModel> list) {
         this.list = list;
         manager = new AdapterDelegatesManager<>();
-        manager.addDelegate(new ProductAdapterDelegate(activity));
+        manager.addDelegate(new ProductAdapterDelegate(activity, this));
     }
 
     @Override
@@ -42,5 +44,9 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
 
     public void addAll(List<ProductModel> newList) {
         list.addAll(newList);
+    }
+
+    public List<ProductModel> getList() {
+        return list;
     }
 }

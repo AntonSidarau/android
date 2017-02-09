@@ -23,7 +23,7 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
     private List<ProductModel> list;
     private Context context;
 
-    public ProductRecycleAdapter(List<ProductModel> list, Context context) {
+    public ProductRecycleAdapter(Context context, List<ProductModel> list) {
         this.list = list;
         this.context = context;
     }
@@ -60,7 +60,7 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
             list.get(i).setChecked(newState);
         }
         notifyDataSetChanged();*/
-        new AsyncSelector(this).execute(newState);
+        new AsyncSelector().execute(newState);
         return true;
     }
 
@@ -96,24 +96,18 @@ public class ProductRecycleAdapter extends RecyclerView.Adapter<ProductRecycleAd
         }
     }
 
-    private static class AsyncSelector extends AsyncTask<Boolean, Void, Void> {
-        private ProductRecycleAdapter adapter;
-
-        AsyncSelector(ProductRecycleAdapter adapter) {
-            this.adapter = adapter;
-        }
-
+    private class AsyncSelector extends AsyncTask<Boolean, Void, Void> {
         @Override
         protected Void doInBackground(Boolean... params) {
-            for (int i = 0; i < adapter.list.size(); i++) {
-                adapter.list.get(i).setChecked(params[0]);
+            for (int i = 0; i < list.size(); i++) {
+                list.get(i).setChecked(params[0]);
             }
             return null;
         }
 
         @Override
         protected void onPostExecute(Void aVoid) {
-            adapter.notifyDataSetChanged();
+            ProductRecycleAdapter.this.notifyDataSetChanged();
         }
     }
 }

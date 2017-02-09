@@ -8,8 +8,6 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.view.View;
-import android.widget.CheckBox;
 
 import com.example.asus.calculator.R;
 import com.example.asus.calculator.model.ProductModel;
@@ -68,8 +66,7 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
     }
 
     @Override
-    public void update(View v) {
-        boolean newState = !((CheckBox) v).isChecked();
+    public void update(boolean newState) {
         new AsyncSelector().execute(newState);
     }
 

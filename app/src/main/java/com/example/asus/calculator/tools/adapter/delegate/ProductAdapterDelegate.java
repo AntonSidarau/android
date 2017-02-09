@@ -25,7 +25,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     private OnLongClickCheckBoxListener listener;
 
     public interface OnLongClickCheckBoxListener {
-        void update(View view);
+        void update(boolean newState);
     }
 
     public ProductAdapterDelegate(OnLongClickCheckBoxListener listener) {
@@ -65,7 +65,8 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
 
     @Override
     public boolean onLongClick(View v) {
-        listener.update(v);
+        boolean newState = !((CheckBox) v).isChecked();
+        listener.update(newState);
         return true;
     }
 

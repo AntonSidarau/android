@@ -1,6 +1,5 @@
 package com.example.asus.calculator.ui.activity;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +19,10 @@ import com.example.asus.calculator.tools.loader.ResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class RecycleActivity extends AppCompatActivity implements ProductAdapterDelegate.OnLongClickCheckBoxListener {
     private static final String LOG_TAG = RecycleActivity.class.getSimpleName();
@@ -35,15 +38,12 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         List<ProductModel> list = new ArrayList<>();
-        adapter = new ProductModelRecycleAdapter(this, list);
+        adapter = new ProductModelRecycleAdapter(list);
         adapter.addDelegates(new ProductAdapterDelegate(this));
 
-        lazyListener = new ResponseListener<ProductModel>() {
-            @Override
-            public void onResponse(List<ProductModel> list) {
-                adapter.addAll(list);
-                adapter.notifyDataSetChanged();
-            }
+        lazyListener = list1 -> {
+            adapter.addAll(list1);
+            adapter.notifyDataSetChanged();
         };
 
         ProductFullLoadTask task = new ProductFullLoadTask(adapter.getItemCount(), getApplicationContext(),
@@ -67,21 +67,10 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
 
     @Override
     public void update(boolean newState) {
-        new AsyncSelector().execute(newState);
-    }
-
-    private class AsyncSelector extends AsyncTask<Boolean, Void, Void> {
-        @Override
-        protected Void doInBackground(Boolean... params) {
-            for (int i = 0; i < adapter.getItemCount(); i++) {
-                adapter.getList().get(i).setChecked(params[0]);
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            adapter.notifyDataSetChanged();
-        }
+        Observable.fromIterable(adapter.getList())
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> adapter.notifyDataSetChanged())
+                .subscribe(productModel -> productModel.setChecked(newState));
     }
 }

@@ -72,15 +72,11 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
-        @BindView(R.id.tv_product_name)
-        TextView tvName;
-        @BindView(R.id.tv_calorie)
-        TextView tvCalorie;
-        @BindView(R.id.cb_product_odd)
-        CheckBox checkBox;
+        @BindView(R.id.tv_product_name) TextView tvName;
+        @BindView(R.id.tv_calorie) TextView tvCalorie;
+        @BindView(R.id.cb_product_odd) CheckBox checkBox;
 
-        @BindString(R.string.textView_secondary_list_product)
-        String calorieText;
+        @BindString(R.string.textView_secondary_list_product) String calorieText;
 
         ViewHolder(View view) {
             super(view);

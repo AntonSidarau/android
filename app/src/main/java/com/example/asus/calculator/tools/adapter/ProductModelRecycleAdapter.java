@@ -1,6 +1,5 @@
 package com.example.asus.calculator.tools.adapter;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.ViewGroup;
 
@@ -16,7 +15,7 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
     private AdapterDelegatesManager<List<ProductModel>> manager;
     private List<ProductModel> list;
 
-    public ProductModelRecycleAdapter(Activity activity, List<ProductModel> list) {
+    public ProductModelRecycleAdapter(List<ProductModel> list) {
         this.list = list;
         manager = new AdapterDelegatesManager<>();
     }

@@ -47,8 +47,4 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
     public void addAll(List<ProductModel> newList) {
         list.addAll(newList);
     }
-
-    public List<ProductModel> getList() {
-        return list;
-    }
 }

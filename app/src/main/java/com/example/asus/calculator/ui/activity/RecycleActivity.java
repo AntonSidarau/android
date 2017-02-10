@@ -68,9 +68,11 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
     @Override
     public void update(boolean newState) {
         Observable.fromIterable(adapter.getList())
-                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread())
+                .doOnNext(productModel -> productModel.setChecked(newState))
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> adapter.notifyDataSetChanged())
-                .subscribe(productModel -> productModel.setChecked(newState));
+                .subscribe();
     }
 }
+

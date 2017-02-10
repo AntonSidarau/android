@@ -15,6 +15,7 @@ import com.example.asus.calculator.model.persistent.Category;
 import com.example.asus.calculator.tools.adapter.picasso.CircleTransformation;
 import com.example.asus.calculator.ui.activity.DishActivity;
 import com.example.asus.calculator.ui.activity.RecycleActivity;
+import com.example.asus.calculator.ui.activity.RetroActivity;
 import com.example.asus.calculator.ui.activity.SearchActivity;
 import com.example.asus.calculator.util.MagicConstants;
 import com.squareup.picasso.Picasso;
@@ -24,6 +25,7 @@ public class MainFragment extends Fragment implements View.OnClickListener {
     private Button btnLower;
     private Button btnUpper;
     private Button btnNew;
+    private Button btnRetro;
 
     @Nullable
     @Override
@@ -31,8 +33,10 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         btnLower = (Button) rootView.findViewById(R.id.btnLower);
         btnUpper = (Button) rootView.findViewById(R.id.btnUpper);
-        btnNew = (Button) rootView.findViewById(R.id.btnNew);
+        btnNew = (Button) rootView.findViewById(R.id.btn_new);
+        btnRetro = (Button) rootView.findViewById(R.id.btn_retro);
 
+        btnRetro.setOnClickListener(this);
         btnLower.setOnClickListener(this);
         btnUpper.setOnClickListener(this);
         btnNew.setOnClickListener(this);
@@ -68,8 +72,13 @@ public class MainFragment extends Fragment implements View.OnClickListener {
                 startActivity(intent);
                 break;
 
-            case R.id.btnNew:
+            case R.id.btn_new:
                 intent = new Intent(getContext(), RecycleActivity.class);
+                startActivity(intent);
+                break;
+
+            case R.id.btn_retro:
+                intent = new Intent(getContext(), RetroActivity.class);
                 startActivity(intent);
                 break;
 

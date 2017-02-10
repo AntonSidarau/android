@@ -6,7 +6,8 @@
 
     <string name="button_upper_main_tab">No action</string>
     <string name="button_lower_main_tab">Go to category</string>
-    <string name="button_new_main_tab">Test new features</string>
+    <string name="btn_new_main_tab">Test new features</string>
+    <string name="btn_retro_main_tab">Test retrofit</string>
     <string name="image_view_cnt_descr_main_tab">Description</string>
 
     <string name="menu_search_settings">Go to Main</string>

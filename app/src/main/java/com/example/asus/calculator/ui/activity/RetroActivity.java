@@ -51,7 +51,7 @@ public class RetroActivity extends AppCompatActivity {
         }
 
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl("http://192.168.110.101:8080/")
+                .baseUrl("http://192.168.3.4:8080/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         Log.d(TAG, "fetch: before executing query");

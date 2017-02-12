@@ -25,7 +25,7 @@ import io.reactivex.schedulers.Schedulers;
 
 
 public class RecycleActivity extends AppCompatActivity implements ProductAdapterDelegate.OnLongClickCheckBoxListener {
-    private static final String LOG_TAG = RecycleActivity.class.getSimpleName();
+    private static final String TAG = RecycleActivity.class.getSimpleName();
 
     private ProductModelRecycleAdapter adapter;
     private RecyclerView recyclerView;
@@ -37,6 +37,7 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle);
 
+        Log.d(TAG, "onCreate: started");
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         list = new ArrayList<>();
         adapter = new ProductModelRecycleAdapter(list);
@@ -58,7 +59,7 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
         recyclerView.addOnScrollListener(new LazyLoaderRecycle(manager) {
             @Override
             public void loadMore(RecyclerView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-                Log.d(LOG_TAG, "loadMore() executed");
+                Log.d(TAG, "loadMore() executed");
                 ProductFullLoadTask task = new ProductFullLoadTask(adapter.getItemCount(), getApplicationContext(),
                         lazyListener);
                 task.execute();
@@ -70,9 +71,15 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
     public void update(boolean newState) {
         Observable.fromIterable(list)
                 .observeOn(Schedulers.newThread())
-                .doOnNext(productModel -> productModel.setChecked(newState))
+                .doOnNext(productModel -> {
+                    productModel.setChecked(newState);
+                    Log.d(TAG, "update: productModel: " + productModel.getName());
+                })
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> adapter.notifyDataSetChanged())
+                .doOnComplete(() -> {
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG, "update: in doOnComplete");
+                })
                 .subscribe();
     }
 }

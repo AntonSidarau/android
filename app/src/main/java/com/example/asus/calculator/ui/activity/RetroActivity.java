@@ -72,7 +72,9 @@ public class RetroActivity extends AppCompatActivity {
                     return 0;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userModels -> adapter.notifyDataSetChanged());
+                .subscribe(userModels -> adapter.notifyDataSetChanged(),
+                        throwable -> Toast.makeText(getApplicationContext(), "can't connect",
+                                Toast.LENGTH_SHORT).show());
     }
 
     @OnClick(R.id.btn_get_user_by_id)

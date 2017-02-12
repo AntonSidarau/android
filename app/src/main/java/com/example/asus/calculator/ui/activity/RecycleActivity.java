@@ -20,28 +20,33 @@ import com.example.asus.calculator.tools.loader.ResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import io.reactivex.subjects.PublishSubject;
 
 
-public class RecycleActivity extends AppCompatActivity implements ProductAdapterDelegate.OnLongClickCheckBoxListener {
+public class RecycleActivity extends AppCompatActivity {
     private static final String TAG = RecycleActivity.class.getSimpleName();
 
     private ProductModelRecycleAdapter adapter;
     private RecyclerView recyclerView;
     private ResponseListener<Model> lazyListener;
     private List<Model> list;
+    private PublishSubject<Boolean> subject;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle);
 
+        subject = PublishSubject.create();
+
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         list = new ArrayList<>();
         adapter = new ProductModelRecycleAdapter(list);
-        adapter.addDelegates(new ProductAdapterDelegate(this));
+        ProductAdapterDelegate delegate = new ProductAdapterDelegate();
+        delegate.setSubject(subject);
+        adapter.addDelegates(delegate);
 
         lazyListener = list1 -> {
             adapter.addAll(list1);
@@ -51,6 +56,19 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
         ProductFullLoadTask task = new ProductFullLoadTask(adapter.getItemCount(), getApplicationContext(),
                 lazyListener);
         task.execute();
+
+        /* наркомания */
+        subject
+                .observeOn(Schedulers.computation())
+                .map(aBoolean -> {
+                    for (Model model : list) {
+                        ((ProductModel) model).setChecked(aBoolean);
+                    }
+                    return true;
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(aBoolean -> adapter.notifyDataSetChanged());
+
 
         LinearLayoutManager manager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(manager);
@@ -65,29 +83,6 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
                 task.execute();
             }
         });
-    }
-
-    @Override
-    public void update(final boolean newState) {
-        //такое себе, постоянно пересоздается цепочка
-        Observable.fromIterable(list)
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> adapter.notifyDataSetChanged())
-                .observeOn(Schedulers.computation())
-                .subscribe(model -> ((ProductModel) model).setChecked(newState));
-
-        //тоже самое, но без лишних действий
-        /*Observable.<ProductModel>create(e -> {
-            for (Model model : list) {
-                ((ProductModel)model).setChecked(newState);
-            }
-            e.onComplete();
-        })
-                .subscribeOn(Schedulers.computation())
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> adapter.notifyDataSetChanged())
-                .subscribe();*/
     }
 }
 

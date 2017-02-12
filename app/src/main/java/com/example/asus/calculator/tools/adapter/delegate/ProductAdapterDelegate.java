@@ -19,18 +19,15 @@ import java.util.List;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.reactivex.subjects.PublishSubject;
 
 public class ProductAdapterDelegate extends AdapterDelegate<List<Model>> implements View.OnLongClickListener {
     private static final String TAG = ProductAdapterDelegate.class.getSimpleName();
 
-    private OnLongClickCheckBoxListener listener;
+    private PublishSubject<Boolean> subject;
 
-    public interface OnLongClickCheckBoxListener {
-        void update(final boolean newState);
-    }
-
-    public ProductAdapterDelegate(OnLongClickCheckBoxListener listener) {
-        this.listener = listener;
+    public void setSubject(PublishSubject<Boolean> subject) {
+        this.subject = subject;
     }
 
     @Override
@@ -66,7 +63,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<Model>> impleme
     @Override
     public boolean onLongClick(View v) {
         boolean newState = !((CheckBox) v).isChecked();
-        listener.update(newState);
+        subject.onNext(newState);
         return true;
     }
 

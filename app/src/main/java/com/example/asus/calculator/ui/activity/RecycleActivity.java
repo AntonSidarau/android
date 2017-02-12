@@ -19,6 +19,10 @@ import com.example.asus.calculator.tools.loader.ResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 
 public class RecycleActivity extends AppCompatActivity implements ProductAdapterDelegate.OnLongClickCheckBoxListener {
     private static final String LOG_TAG = RecycleActivity.class.getSimpleName();
@@ -26,6 +30,7 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
     private ProductModelRecycleAdapter adapter;
     private RecyclerView recyclerView;
     private ResponseListener<ProductModel> lazyListener;
+    private List<ProductModel> list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -33,7 +38,7 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
         setContentView(R.layout.activity_recycle);
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
-        List<ProductModel> list = new ArrayList<>();
+        list = new ArrayList<>();
         adapter = new ProductModelRecycleAdapter(list);
         adapter.addDelegates(new ProductAdapterDelegate(this));
 
@@ -63,7 +68,12 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
 
     @Override
     public void update(boolean newState) {
-        adapter.notifyDataSetChanged();
+        Observable.fromIterable(list)
+                .observeOn(Schedulers.newThread())
+                .doOnNext(productModel -> productModel.setChecked(newState))
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> adapter.notifyDataSetChanged())
+                .subscribe();
     }
 }
 

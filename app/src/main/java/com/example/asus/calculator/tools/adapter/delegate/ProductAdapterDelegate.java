@@ -19,15 +19,11 @@ import java.util.List;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> implements View.OnLongClickListener {
     private static final String TAG = ProductAdapterDelegate.class.getSimpleName();
 
     private OnLongClickCheckBoxListener listener;
-    private List<ProductModel> list;
 
     public interface OnLongClickCheckBoxListener {
         void update(boolean newState);
@@ -54,7 +50,6 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     @Override
     protected void onBindViewHolder(@NonNull List<ProductModel> list, int position,
                                     @NonNull RecyclerView.ViewHolder holder, @NonNull List<Object> payloads) {
-        this.list = list;
         ViewHolder vh = (ViewHolder) holder;
         ProductModel model = list.get(position);
         vh.tvName.setText(model.getName());
@@ -72,12 +67,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     @Override
     public boolean onLongClick(View v) {
         boolean newState = !((CheckBox) v).isChecked();
-        Observable.fromIterable(list)
-                .observeOn(Schedulers.newThread())
-                .doOnNext(productModel -> productModel.setChecked(newState))
-                .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> listener.update(true))
-                .subscribe();
+        listener.update(newState);
         return true;
     }
 

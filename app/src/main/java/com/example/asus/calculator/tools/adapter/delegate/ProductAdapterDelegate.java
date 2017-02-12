@@ -2,7 +2,6 @@ package com.example.asus.calculator.tools.adapter.delegate;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,7 +25,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     private OnLongClickCheckBoxListener listener;
 
     public interface OnLongClickCheckBoxListener {
-        void update(boolean newState);
+        void update(final boolean newState);
     }
 
     public ProductAdapterDelegate(OnLongClickCheckBoxListener listener) {
@@ -59,7 +58,6 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         vh.checkBox.setOnCheckedChangeListener(null);
         vh.checkBox.setChecked(model.isChecked());
 
-        Log.d(TAG, "onBindViewHolder: " + model.getName() + " : " + model.isChecked());
         vh.checkBox.setOnCheckedChangeListener(vh);
         vh.checkBox.setOnLongClickListener(this);
     }
@@ -88,7 +86,6 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             ProductModel model = (ProductModel) buttonView.getTag();
             model.setChecked(isChecked);
-            Log.d(TAG, model.getName() + " : " + isChecked);
         }
 
         String getCalorieText() {

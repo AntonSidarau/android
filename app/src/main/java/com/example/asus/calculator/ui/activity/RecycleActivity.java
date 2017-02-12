@@ -37,7 +37,6 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle);
 
-        Log.d(TAG, "onCreate: started");
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         list = new ArrayList<>();
         adapter = new ProductModelRecycleAdapter(list);
@@ -68,19 +67,27 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
     }
 
     @Override
-    public void update(boolean newState) {
+    public void update(final boolean newState) {
+        //такое себе, постоянно пересоздается цепочка
         Observable.fromIterable(list)
-                .observeOn(Schedulers.newThread())
-                .doOnNext(productModel -> {
-                    productModel.setChecked(newState);
-                    Log.d(TAG, "update: productModel: " + productModel.getName());
-                })
+                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> {
-                    adapter.notifyDataSetChanged();
-                    Log.d(TAG, "update: in doOnComplete");
-                })
-                .subscribe();
+                .doOnComplete(() -> adapter.notifyDataSetChanged())
+                .observeOn(Schedulers.computation())
+                .subscribe(productModel -> productModel.setChecked(newState));
+
+        //тоже самое, но без лишних действий
+        /*Observable.<ProductModel>create(e -> {
+            for (ProductModel model : list) {
+                model.setChecked(newState);
+            }
+            e.onComplete();
+        })
+                .subscribeOn(Schedulers.computation())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnComplete(() -> adapter.notifyDataSetChanged())
+                .subscribe();*/
+
     }
 }
 

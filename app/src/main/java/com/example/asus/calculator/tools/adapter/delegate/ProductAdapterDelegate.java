@@ -10,6 +10,7 @@ import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import com.example.asus.calculator.R;
+import com.example.asus.calculator.model.Model;
 import com.example.asus.calculator.model.ProductModel;
 import com.hannesdorfmann.adapterdelegates3.AdapterDelegate;
 
@@ -19,7 +20,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> implements View.OnLongClickListener {
+public class ProductAdapterDelegate extends AdapterDelegate<List<Model>> implements View.OnLongClickListener {
     private static final String TAG = ProductAdapterDelegate.class.getSimpleName();
 
     private OnLongClickCheckBoxListener listener;
@@ -33,7 +34,7 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
     }
 
     @Override
-    protected boolean isForViewType(@NonNull List<ProductModel> items, int position) {
+    protected boolean isForViewType(@NonNull List<Model> items, int position) {
         return items.get(position) instanceof ProductModel;
     }
 
@@ -43,14 +44,14 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_product, null, false);
         itemView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT));
-        return new ViewHolder(itemView);
+        return new ProductViewHolder(itemView);
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull List<ProductModel> list, int position,
+    protected void onBindViewHolder(@NonNull List<Model> list, int position,
                                     @NonNull RecyclerView.ViewHolder holder, @NonNull List<Object> payloads) {
-        ViewHolder vh = (ViewHolder) holder;
-        ProductModel model = list.get(position);
+        ProductViewHolder vh = (ProductViewHolder) holder;
+        ProductModel model = (ProductModel) list.get(position);
         vh.tvName.setText(model.getName());
         String text = String.format("%s %s", model.getCalories(), vh.getCalorieText());
         vh.tvCalorie.setText(text);
@@ -69,14 +70,14 @@ public class ProductAdapterDelegate extends AdapterDelegate<List<ProductModel>> 
         return true;
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    class ProductViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
         @BindView(R.id.tv_product_name) TextView tvName;
         @BindView(R.id.tv_calorie) TextView tvCalorie;
         @BindView(R.id.cb_product_odd) CheckBox checkBox;
 
         @BindString(R.string.textView_secondary_list_product) String calorieText;
 
-        ViewHolder(View view) {
+        ProductViewHolder(View view) {
             super(view);
             ButterKnife.bind(this, view);
             checkBox.setOnCheckedChangeListener(this);

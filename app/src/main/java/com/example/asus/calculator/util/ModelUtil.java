@@ -1,5 +1,6 @@
 package com.example.asus.calculator.util;
 
+import com.example.asus.calculator.model.Model;
 import com.example.asus.calculator.model.ProductModel;
 import com.example.asus.calculator.model.persistent.Product;
 
@@ -7,6 +8,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ModelUtil {
+    public static List<Model> copyLists(List<Product> list) {
+        if (list != null) {
+            List<Model> modelList = new ArrayList<>(list.size());
+            for (Product product : list) {
+                modelList.add(new ProductModel(product));
+            }
+
+            return modelList;
+        }
+        return null;
+    }
+
+    public static <T extends Model> List<Model> convertList(List<T> list) {
+        if (list != null) {
+            List<Model> modelList = new ArrayList<>(list.size());
+            for (T item : list) {
+                modelList.add(item);
+            }
+            return modelList;
+        }
+        return null;
+    }
+
     public static List<ProductModel> copyList(List<Product> list) {
         if (list != null) {
             List<ProductModel> modelList = new ArrayList<>(list.size());

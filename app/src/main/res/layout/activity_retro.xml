@@ -38,7 +38,8 @@
             android:id="@+id/rv_retro"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:scrollbars="vertical">
+            android:scrollbars="vertical"
+            tools:listitem="@layout/item_user">
         </android.support.v7.widget.RecyclerView>
     </RelativeLayout>
 

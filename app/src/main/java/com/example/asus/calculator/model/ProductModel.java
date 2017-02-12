@@ -4,7 +4,7 @@ import com.example.asus.calculator.model.persistent.Product;
 
 import java.io.Serializable;
 
-public class ProductModel implements Serializable {
+public class ProductModel implements Serializable, Model {
     private static final long serialVersionUID = 8917108211861359530L;
 
     private Product product = new Product();

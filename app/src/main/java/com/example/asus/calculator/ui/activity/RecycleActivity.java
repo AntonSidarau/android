@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 
 import com.example.asus.calculator.R;
+import com.example.asus.calculator.model.Model;
 import com.example.asus.calculator.model.ProductModel;
 import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
 import com.example.asus.calculator.tools.adapter.delegate.ProductAdapterDelegate;
@@ -29,8 +30,8 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
 
     private ProductModelRecycleAdapter adapter;
     private RecyclerView recyclerView;
-    private ResponseListener<ProductModel> lazyListener;
-    private List<ProductModel> list;
+    private ResponseListener<Model> lazyListener;
+    private List<Model> list;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,12 +75,12 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> adapter.notifyDataSetChanged())
                 .observeOn(Schedulers.computation())
-                .subscribe(productModel -> productModel.setChecked(newState));
+                .subscribe(model -> ((ProductModel) model).setChecked(newState));
 
         //тоже самое, но без лишних действий
         /*Observable.<ProductModel>create(e -> {
-            for (ProductModel model : list) {
-                model.setChecked(newState);
+            for (Model model : list) {
+                ((ProductModel)model).setChecked(newState);
             }
             e.onComplete();
         })
@@ -87,7 +88,6 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
                 .observeOn(AndroidSchedulers.mainThread())
                 .doOnComplete(() -> adapter.notifyDataSetChanged())
                 .subscribe();*/
-
     }
 }
 

@@ -1,6 +1,6 @@
 package com.example.asus.calculator.model;
 
-public class UserModel {
+public class UserModel implements Model {
     private Long id;
     private String name;
 

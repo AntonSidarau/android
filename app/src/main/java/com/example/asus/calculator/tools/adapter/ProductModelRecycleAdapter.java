@@ -15,9 +15,12 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
     private AdapterDelegatesManager<List<Model>> manager;
     private List<Model> list;
 
-    public ProductModelRecycleAdapter(List<Model> list) {
-        this.list = list;
+    public ProductModelRecycleAdapter() {
         manager = new AdapterDelegatesManager<>();
+    }
+    public ProductModelRecycleAdapter(List<Model> list) {
+        this();
+        this.list = list;
     }
 
     public void addDelegates(AdapterDelegate<List<Model>> delegate) {
@@ -46,5 +49,9 @@ public class ProductModelRecycleAdapter extends RecyclerView.Adapter {
 
     public void addAll(List<Model> newList) {
         list.addAll(newList);
+    }
+
+    public void setList(List<Model> list) {
+        this.list = list;
     }
 }

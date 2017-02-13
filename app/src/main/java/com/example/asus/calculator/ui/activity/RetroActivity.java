@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.example.asus.calculator.R;
 import com.example.asus.calculator.model.Model;
+import com.example.asus.calculator.tools.CalculatorApplication;
 import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
 import com.example.asus.calculator.tools.adapter.delegate.UserAdapterDelegate;
 import com.example.asus.calculator.tools.retrofit.service.UserService;
@@ -22,6 +23,8 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,7 +41,7 @@ public class RetroActivity extends AppCompatActivity {
     @BindView(R.id.btn_get_user_by_id) Button btnFetchUser;
     @BindView(R.id.rv_retro) RecyclerView recyclerView;
 
-    private ProductModelRecycleAdapter adapter;
+    @Inject ProductModelRecycleAdapter adapter;
     private List<Model> list;
     private Retrofit retrofit;
     private UserService service;
@@ -48,9 +51,12 @@ public class RetroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retro);
         ButterKnife.bind(this);
+        CalculatorApplication.getComponent().inject(this);
+
 
         list = new ArrayList<>();
-        adapter = new ProductModelRecycleAdapter(list);
+        adapter.setList(list);
+        //adapter = new ProductModelRecycleAdapter(list);
         adapter.addDelegates(new UserAdapterDelegate());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));

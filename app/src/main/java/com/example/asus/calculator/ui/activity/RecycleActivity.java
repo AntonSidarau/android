@@ -11,6 +11,7 @@ import android.util.Log;
 import com.example.asus.calculator.R;
 import com.example.asus.calculator.model.Model;
 import com.example.asus.calculator.model.ProductModel;
+import com.example.asus.calculator.tools.CalculatorApplication;
 import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
 import com.example.asus.calculator.tools.adapter.delegate.ProductAdapterDelegate;
 import com.example.asus.calculator.tools.loader.LazyLoaderRecycle;
@@ -20,6 +21,8 @@ import com.example.asus.calculator.tools.loader.ResponseListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.inject.Inject;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
@@ -28,7 +31,7 @@ import io.reactivex.subjects.PublishSubject;
 public class RecycleActivity extends AppCompatActivity {
     private static final String TAG = RecycleActivity.class.getSimpleName();
 
-    private ProductModelRecycleAdapter adapter;
+    @Inject ProductModelRecycleAdapter adapter;
     private RecyclerView recyclerView;
     private ResponseListener<Model> lazyListener;
     private List<Model> list;
@@ -38,12 +41,13 @@ public class RecycleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle);
-
+        CalculatorApplication.getComponent().inject(this);
         subject = PublishSubject.create();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);
         list = new ArrayList<>();
-        adapter = new ProductModelRecycleAdapter(list);
+        adapter.setList(list);
+        //adapter = new ProductModelRecycleAdapter(list);
         ProductAdapterDelegate delegate = new ProductAdapterDelegate();
         delegate.setSubject(subject);
         adapter.addDelegates(delegate);

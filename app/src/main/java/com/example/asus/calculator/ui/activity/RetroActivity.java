@@ -26,9 +26,8 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.Disposable;
+import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -71,10 +70,7 @@ public class RetroActivity extends AppCompatActivity {
                 .subscribeOn(Schedulers.io())
                 .map(ModelUtil::convertList)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userModels -> {
-                    adapter.addAll(userModels);
-                    adapter.notifyDataSetChanged();
-                });
+                .subscribe(new MyObserver());
     }
 
     @OnClick(R.id.btn_get_user_by_id)
@@ -94,25 +90,22 @@ public class RetroActivity extends AppCompatActivity {
     }
 
 
-    private class MyObserver implements Observer<List<Model>> {
-        @Override
-        public void onSubscribe(Disposable d) {
-
-        }
-
+    private class MyObserver extends DisposableObserver<List<Model>> {
         @Override
         public void onNext(List<Model> value) {
+            Log.d(TAG, "onNext: entered in MyObserver");
             adapter.addAll(value);
         }
 
         @Override
         public void onError(Throwable e) {
-
+            Toast.makeText(getApplicationContext(), "can't connect",
+                    Toast.LENGTH_SHORT).show();
         }
 
         @Override
         public void onComplete() {
-
+            adapter.notifyDataSetChanged();
         }
     }
 }

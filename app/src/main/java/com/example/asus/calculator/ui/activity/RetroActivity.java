@@ -67,12 +67,12 @@ public class RetroActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: fetching all users");
         service.getAllUsers()
                 .subscribeOn(Schedulers.io())
-                .map(userModels -> {
-                    adapter.addAll(ModelUtil.convertList(userModels));
-                    return 0;
-                })
+                .map(ModelUtil::convertList)
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userModels -> adapter.notifyDataSetChanged());
+                .subscribe(userModels -> {
+                    adapter.addAll(userModels);
+                    adapter.notifyDataSetChanged();
+                });
     }
 
     @OnClick(R.id.btn_get_user_by_id)

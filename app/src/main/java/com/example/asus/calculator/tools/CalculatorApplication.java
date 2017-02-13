@@ -5,6 +5,7 @@ import android.app.Application;
 import com.example.asus.calculator.tools.dagger.AppComponent;
 import com.example.asus.calculator.tools.dagger.DaggerAppComponent;
 import com.example.asus.calculator.tools.dagger.modules.AdapterModule;
+import com.example.asus.calculator.tools.dagger.modules.ServiceModule;
 import com.example.asus.calculator.tools.db.DBHelperFactory;
 import com.example.asus.calculator.tools.db.DatabaseHelper;
 
@@ -32,6 +33,7 @@ public class CalculatorApplication extends Application {
     protected AppComponent buildComponent() {
         return DaggerAppComponent.builder()
                 .adapterModule(new AdapterModule())
+                .serviceModule(new ServiceModule())
                 .build();
     }
 }

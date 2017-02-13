@@ -17,9 +17,7 @@ import com.example.asus.calculator.tools.CalculatorApplication;
 import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
 import com.example.asus.calculator.tools.adapter.delegate.UserAdapterDelegate;
 import com.example.asus.calculator.tools.retrofit.service.UserService;
-import com.example.asus.calculator.util.MagicConstants;
 import com.example.asus.calculator.util.ModelUtil;
-import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +30,6 @@ import butterknife.OnClick;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetroActivity extends AppCompatActivity {
     private static final String TAG = RetroActivity.class.getSimpleName();
@@ -44,7 +41,7 @@ public class RetroActivity extends AppCompatActivity {
     @Inject ProductModelRecycleAdapter adapter;
     private List<Model> list;
     private Retrofit retrofit;
-    private UserService service;
+    @Inject UserService service;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,22 +50,15 @@ public class RetroActivity extends AppCompatActivity {
         ButterKnife.bind(this);
         CalculatorApplication.getComponent().inject(this);
 
-
         list = new ArrayList<>();
         adapter.setList(list);
-        //adapter = new ProductModelRecycleAdapter(list);
         adapter.addDelegates(new UserAdapterDelegate());
 
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
 
-        retrofit = new Retrofit.Builder()
-                .baseUrl(MagicConstants.DEFAULT_HTTP)
-                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                .addConverterFactory(GsonConverterFactory.create())
-                .build();
-        service = retrofit.create(UserService.class);
+        //service = retrofit.create(UserService.class);
 
         Log.d(TAG, "onCreate: fetching all users");
         service.getAllUsers()
@@ -78,9 +68,9 @@ public class RetroActivity extends AppCompatActivity {
                     return 0;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(userModels -> adapter.notifyDataSetChanged(),
+                .subscribe(userModels -> adapter.notifyDataSetChanged()/*,
                         throwable -> Toast.makeText(getApplicationContext(), "can't connect",
-                                Toast.LENGTH_SHORT).show());
+                                Toast.LENGTH_SHORT).show()*/);
     }
 
     @OnClick(R.id.btn_get_user_by_id)

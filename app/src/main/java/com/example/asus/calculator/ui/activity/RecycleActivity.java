@@ -71,11 +71,16 @@ public class RecycleActivity extends AppCompatActivity implements ProductAdapter
     public void update(final boolean newState) {
         //такое себе, постоянно пересоздается цепочка
         Observable.fromIterable(list)
-                .subscribeOn(Schedulers.computation())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnComplete(() -> adapter.notifyDataSetChanged())
-                .observeOn(Schedulers.computation())
-                .subscribe(model -> ((ProductModel) model).setChecked(newState));
+                .doOnComplete(() -> {
+                    adapter.notifyDataSetChanged();
+                    Log.d(TAG, "update: doOnComplete is on Thread: " + Thread.currentThread().getName());
+                })
+                .subscribeOn(Schedulers.computation())
+                .subscribe(model -> {
+                    ((ProductModel) model).setChecked(newState);
+                    Log.d(TAG, "update: subscribe is on Thread: " + Thread.currentThread().getName());
+                });
 
         //тоже самое, но без лишних действий
         /*Observable.<ProductModel>create(e -> {

@@ -64,11 +64,10 @@ public class RecycleActivity extends AppCompatActivity {
         /* наркомания */
         subject
                 .observeOn(Schedulers.computation())
-                .map(aBoolean -> {
+                .doOnNext(aBoolean -> {
                     for (Model model : list) {
                         ((ProductModel) model).setChecked(aBoolean);
                     }
-                    return true;
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(aBoolean -> adapter.notifyDataSetChanged());

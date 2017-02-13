@@ -8,5 +8,7 @@ public class MagicConstants {
     public static final String CALORIFIC_PREFERENCE_COND_LOW = "Calorie_low";
     public static final String SEARCH_ACTIVITY_CHECKED_PRODUCTS = "Checked_list";
     public static final String OLD_CHECKED_PRODUCTS = "Old_checked_products";
-    public static final String DEFAULT_HTTP = "http://192.168.3.4:8080/";
+    //192.168.110.101
+    //192.168.3.4
+    public static final String DEFAULT_HTTP = "http://192.168.110.101:8080/";
 }

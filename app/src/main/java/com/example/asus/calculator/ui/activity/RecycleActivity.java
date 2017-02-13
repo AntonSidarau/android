@@ -41,7 +41,7 @@ public class RecycleActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recycle);
-        CalculatorApplication.getComponent().inject(this);
+        CalculatorApplication.get().getRecycleViewComponent().inject(this);
         subject = PublishSubject.create();
 
         recyclerView = (RecyclerView) findViewById(R.id.recycleView);

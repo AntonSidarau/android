@@ -48,7 +48,7 @@ public class RetroActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_retro);
         ButterKnife.bind(this);
-        CalculatorApplication.getComponent().inject(this);
+        CalculatorApplication.get().getRetroUsersComponent().inject(this);
 
         list = new ArrayList<>();
         adapter.setList(list);

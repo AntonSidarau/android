@@ -1,8 +1,7 @@
 package com.example.asus.calculator.tools.dagger.modules;
 
 import com.example.asus.calculator.tools.adapter.ProductModelRecycleAdapter;
-
-import javax.inject.Singleton;
+import com.example.asus.calculator.tools.dagger.annotation.RecycleViewScope;
 
 import dagger.Module;
 import dagger.Provides;
@@ -10,7 +9,7 @@ import dagger.Provides;
 @Module
 public class AdapterModule {
     @Provides
-    @Singleton
+    @RecycleViewScope
     public ProductModelRecycleAdapter provideAdapter() {
         return new ProductModelRecycleAdapter();
     }

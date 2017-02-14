@@ -32,8 +32,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         //ButterKnife.bind(this);
-        //Log.d(TAG, "onCreate: drawerLayout " + drawerLayout);
-
+        Log.d(TAG, "onCreate: entered");
         FragmentManager manager = getFragmentManager();
         MapFragment mapFragment = (MapFragment) manager.findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
@@ -88,7 +87,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMyLocationButtonClick() {
         if (myLocation == null) {
             myLocation = this.googleMap.getMyLocation();
-            Toast.makeText(getApplicationContext(), "Location is determing...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "Location is determining...", Toast.LENGTH_SHORT).show();
             return true;
         }
         LatLng myPosition = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());

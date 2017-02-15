@@ -41,7 +41,7 @@
         android:id="@+id/fl_list"/>-->
     <fragment
         android:id="@+id/fragment_list"
-        android:name="com.example.googlemap.view.fragment.ListFragment"
+        android:name="com.example.googlemap.view.fragment.MarkerListFragment"
         android:layout_width="240dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"/>

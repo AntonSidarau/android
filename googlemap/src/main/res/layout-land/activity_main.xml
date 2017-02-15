@@ -9,11 +9,12 @@
 
     <fragment
         android:id="@+id/fragment_list"
-        android:name="com.example.googlemap.view.fragment.ListFragment"
+        android:name="com.example.googlemap.view.fragment.MarkerListFragment"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:layout_weight="2"/>
+        android:layout_weight="2"
+        tools:layout="@layout/fragment_list"/>
     <!--<FrameLayout
         android:layout_width="0dp"
         android:layout_weight="2"

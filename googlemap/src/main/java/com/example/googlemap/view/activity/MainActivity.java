@@ -18,6 +18,7 @@ import com.example.googlemap.R;
 import com.example.googlemap.domain.Marker;
 import com.example.googlemap.domain.SimpleMarker;
 import com.example.googlemap.tool.map.MyRenderer;
+import com.example.googlemap.view.fragment.MarkerListFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -26,22 +27,36 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.ClusterManager;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.subjects.PublishSubject;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
         ActivityCompat.OnRequestPermissionsResultCallback,
         GoogleMap.OnMapClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int ZOOM_LEVEL = 13;
+    private static final int ZOOM_LEVEL = 10;
     private static final int MY_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     //@BindView(R.id.dl_activity_main) DrawerLayout drawerLayout;
     @BindView(R.id.btn_location) Button btnLocation;
     private GoogleMap googleMap;
     private ClusterManager<Marker> clusterManager;
+    private List<Marker> markers;
+    private OnMarkerAddListener listener;
+    private MarkerListFragment listFragment;
+
+    public interface OnMarkerAddListener {
+        void add(Marker marker);
+    }
+
+    public void setOnMarkerAddListener(OnMarkerAddListener listener) {
+        this.listener = listener;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,9 +67,10 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         Log.d(TAG, "onCreate: entered");
         FragmentManager manager = getFragmentManager();
         MapFragment mapFragment = (MapFragment) manager.findFragmentById(R.id.fragment_map);
+        listFragment = (MarkerListFragment) manager.findFragmentById(R.id.fragment_list);
+        setOnMarkerAddListener(listFragment);
+        markers = listFragment.getMarkerList();
         mapFragment.getMapAsync(this);
-
-
     }
 
     @Override
@@ -84,19 +100,26 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         clusterManager = new ClusterManager<>(getApplicationContext(), this.googleMap);
-        clusterManager.addItem(new SimpleMarker("m1", 55.1709501, 30.214999));
-        clusterManager.addItem(new SimpleMarker("m2", 55.1719500, 30.214999));
-        clusterManager.addItem(new SimpleMarker("m3", 55.1729503, 30.214999));
-        clusterManager.addItem(new SimpleMarker("m4", 55.1709501, 30.204998));
-        clusterManager.addItem(new SimpleMarker("m5", 55.1709501, 30.225000));
+        clusterManager.addItems(markers);
         this.googleMap.setOnCameraIdleListener(clusterManager);
         clusterManager.setRenderer(new MyRenderer(this, this.googleMap, clusterManager));
+
+        PublishSubject<Integer> subject = PublishSubject.create();
+        subject.filter(integer -> integer >= 0)
+                .subscribe(integer ->
+                        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(integer).getPosition(),
+                                ZOOM_LEVEL)));
+        listFragment.setMarkerSubject(subject);
     }
 
     @Override
     public void onMapClick(LatLng latLng) {
-        clusterManager.addItem(new SimpleMarker("Hey", latLng));
+        String title = "m" + (markers.size() + 1);
+        SimpleMarker marker = new SimpleMarker(title, latLng);
+        listener.add(marker);
+        clusterManager.addItem(marker);
         clusterManager.cluster();
+        Log.d(TAG, "onMapClick: markers: " + markers.size());
     }
 
     @Override

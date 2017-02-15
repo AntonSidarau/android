@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.googlemap.R;
+import com.example.googlemap.domain.Marker;
 import com.example.googlemap.domain.SimpleMarker;
 
 import java.util.List;
@@ -14,10 +15,12 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
-    private List<SimpleMarker> simpleMarkers;
+public class SimpleMarkerAdapter extends RecyclerView.Adapter<SimpleMarkerAdapter.MarkerViewHolder> {
+    private static final String TAG = SimpleMarkerAdapter.class.getSimpleName();
+    private List<Marker> simpleMarkers;
 
-    public MarkerAdapter(List<SimpleMarker> simpleMarkers) {
+
+    public SimpleMarkerAdapter(List<Marker> simpleMarkers) {
         this.simpleMarkers = simpleMarkers;
     }
 
@@ -31,7 +34,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
 
     @Override
     public void onBindViewHolder(MarkerViewHolder holder, int position) {
-        SimpleMarker simpleMarker = simpleMarkers.get(position);
+        SimpleMarker simpleMarker = (SimpleMarker) simpleMarkers.get(position);
         holder.tvName.setText(simpleMarker.getTitle());
     }
 
@@ -43,7 +46,7 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
     static class MarkerViewHolder extends RecyclerView.ViewHolder {
         @BindView(R.id.tv_marker_name) TextView tvName;
 
-        public MarkerViewHolder(View itemView) {
+        MarkerViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
         }

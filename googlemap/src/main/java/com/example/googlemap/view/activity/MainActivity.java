@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         if (checkLocationPermission()) {
             btnLocation.setVisibility(View.GONE);
+            enableLocationFeatures();
         } else {
             btnLocation.setVisibility(View.VISIBLE);
         }

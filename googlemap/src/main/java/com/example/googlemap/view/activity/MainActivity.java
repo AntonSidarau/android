@@ -15,12 +15,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.googlemap.R;
+import com.example.googlemap.domain.Marker;
+import com.example.googlemap.domain.SimpleMarker;
+import com.example.googlemap.tool.map.MyRenderer;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.maps.android.clustering.ClusterManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -28,15 +32,16 @@ import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity implements OnMapReadyCallback,
         GoogleMap.OnMyLocationButtonClickListener,
-        ActivityCompat.OnRequestPermissionsResultCallback {
+        ActivityCompat.OnRequestPermissionsResultCallback,
+        GoogleMap.OnMapClickListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private static final int ZOOM_LEVEL = 10;
+    private static final int ZOOM_LEVEL = 13;
     private static final int MY_LOCATION_PERMISSION_REQUEST_CODE = 1;
 
     //@BindView(R.id.dl_activity_main) DrawerLayout drawerLayout;
     @BindView(R.id.btn_location) Button btnLocation;
     private GoogleMap googleMap;
-    private Location myLocation;
+    private ClusterManager<Marker> clusterManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +53,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         FragmentManager manager = getFragmentManager();
         MapFragment mapFragment = (MapFragment) manager.findFragmentById(R.id.fragment_map);
         mapFragment.getMapAsync(this);
+
+
     }
 
     @Override
@@ -60,6 +67,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     public void onMapReady(GoogleMap googleMap) {
         this.googleMap = googleMap;
         this.googleMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        this.googleMap.setOnMapClickListener(this);
         UiSettings uiSettings = this.googleMap.getUiSettings();
         uiSettings.setZoomGesturesEnabled(true);
         uiSettings.setZoomControlsEnabled(true);
@@ -74,13 +82,27 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         } else {
             btnLocation.setVisibility(View.VISIBLE);
         }
-        // myLocation = this.googleMap.getMyLocation();
+
+        clusterManager = new ClusterManager<>(getApplicationContext(), this.googleMap);
+        clusterManager.addItem(new SimpleMarker("m1", 55.1709501, 30.214999));
+        clusterManager.addItem(new SimpleMarker("m2", 55.1719500, 30.214999));
+        clusterManager.addItem(new SimpleMarker("m3", 55.1729503, 30.214999));
+        clusterManager.addItem(new SimpleMarker("m4", 55.1709501, 30.204998));
+        clusterManager.addItem(new SimpleMarker("m5", 55.1709501, 30.225000));
+        this.googleMap.setOnCameraIdleListener(clusterManager);
+        clusterManager.setRenderer(new MyRenderer(this, this.googleMap, clusterManager));
+    }
+
+    @Override
+    public void onMapClick(LatLng latLng) {
+        clusterManager.addItem(new SimpleMarker("Hey", latLng));
+        clusterManager.cluster();
     }
 
     @Override
     public boolean onMyLocationButtonClick() {
-
-        myLocation = this.googleMap.getMyLocation();
+        //temporary
+        Location myLocation = this.googleMap.getMyLocation();
         if (myLocation == null) {
             Toast.makeText(getApplicationContext(), "Location is determining...", Toast.LENGTH_SHORT).show();
             return true;

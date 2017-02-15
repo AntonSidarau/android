@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.googlemap.R;
-import com.example.googlemap.domain.Marker;
+import com.example.googlemap.domain.SimpleMarker;
 
 import java.util.List;
 
@@ -15,10 +15,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerViewHolder> {
-    private List<Marker> markers;
+    private List<SimpleMarker> simpleMarkers;
 
-    public MarkerAdapter(List<Marker> markers) {
-        this.markers = markers;
+    public MarkerAdapter(List<SimpleMarker> simpleMarkers) {
+        this.simpleMarkers = simpleMarkers;
     }
 
     @Override
@@ -31,13 +31,13 @@ public class MarkerAdapter extends RecyclerView.Adapter<MarkerAdapter.MarkerView
 
     @Override
     public void onBindViewHolder(MarkerViewHolder holder, int position) {
-        Marker marker = markers.get(position);
-        holder.tvName.setText(marker.getName());
+        SimpleMarker simpleMarker = simpleMarkers.get(position);
+        holder.tvName.setText(simpleMarker.getTitle());
     }
 
     @Override
     public int getItemCount() {
-        return markers.size();
+        return simpleMarkers.size();
     }
 
     static class MarkerViewHolder extends RecyclerView.ViewHolder {

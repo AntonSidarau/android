@@ -31,7 +31,7 @@ public class MarkerListFragment extends Fragment implements MainActivity.OnMarke
     @BindView(R.id.rv_markers) RecyclerView recyclerView;
     private List<Marker> simpleMarkers;
     private SimpleMarkerAdapter adapter;
-    private MarkerScroller scroller;
+    private LinearLayoutManager manager;
 
 
     @Nullable
@@ -62,18 +62,18 @@ public class MarkerListFragment extends Fragment implements MainActivity.OnMarke
 
 
         adapter = new SimpleMarkerAdapter(simpleMarkers);
-        LinearLayoutManager manager = new LinearLayoutManager(getActivity());
-        scroller = new MarkerScroller(manager);
+        manager = new LinearLayoutManager(getActivity());
 
         recyclerView.setAdapter(adapter);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setLayoutManager(manager);
-        recyclerView.addOnScrollListener(scroller);
         return rootView;
     }
 
-    public void setMarkerSubject(PublishSubject<Integer> subject) {
+    public void setScrollingSubject(PublishSubject<Integer> subject) {
+        MarkerScroller scroller = new MarkerScroller(manager);
         scroller.setMarkerSubject(subject);
+        recyclerView.addOnScrollListener(scroller);
     }
 
     public List<Marker> getMarkerList() {

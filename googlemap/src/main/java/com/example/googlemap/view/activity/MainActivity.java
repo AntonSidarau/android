@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 .subscribe(integer ->
                         this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(integer).getPosition(),
                                 ZOOM_LEVEL)));
-        listFragment.setMarkerSubject(subject);
+        listFragment.setScrollingSubject(subject);
     }
 
     @Override

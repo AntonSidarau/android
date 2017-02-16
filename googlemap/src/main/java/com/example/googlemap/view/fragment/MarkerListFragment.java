@@ -33,7 +33,6 @@ public class MarkerListFragment extends Fragment implements MainActivity.OnMarke
     private SimpleMarkerAdapter adapter;
     private LinearLayoutManager manager;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -59,7 +58,6 @@ public class MarkerListFragment extends Fragment implements MainActivity.OnMarke
         simpleMarkers.add(new SimpleMarker("m15", 46.149396, 27.773438));
         simpleMarkers.add(new SimpleMarker("m16", 58.135922, 10.898438));
         simpleMarkers.add(new SimpleMarker("m17", 60.2943, 24.960938));
-
 
         adapter = new SimpleMarkerAdapter(simpleMarkers);
         manager = new LinearLayoutManager(getActivity());

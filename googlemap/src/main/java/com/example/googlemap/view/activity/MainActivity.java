@@ -104,12 +104,18 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         this.googleMap.setOnCameraIdleListener(clusterManager);
         clusterManager.setRenderer(new MyRenderer(this, this.googleMap, clusterManager));
 
+        listFragment.setScrollingSubject(getSubject());
+    }
+
+    private PublishSubject<Integer> getSubject() {
         PublishSubject<Integer> subject = PublishSubject.create();
-        subject.filter(integer -> integer >= 0)
-                .subscribe(integer ->
-                        this.googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(markers.get(integer).getPosition(),
+        subject
+                .filter(integer -> integer >= 0)
+                .subscribe(integer -> this.googleMap.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(markers.get(integer).getPosition(),
                                 ZOOM_LEVEL)));
-        listFragment.setScrollingSubject(subject);
+
+        return subject;
     }
 
     @Override
